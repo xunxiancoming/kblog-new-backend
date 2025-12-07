@@ -92,7 +92,59 @@ cd api && npm install
 cd ../admin && npm install
 ```
 
-### 3. 环境配置
+### 3. Docker 部署（推荐）
+
+#### 3.1 使用 Docker Compose 一键部署
+
+```bash
+# 复制环境变量文件
+cp api/.env.example api/.env
+
+# 编辑环境变量（如果需要）
+# vi api/.env
+
+# 启动所有服务
+docker-compose up -d
+
+# 查看服务状态
+docker-compose ps
+
+# 查看日志
+docker-compose logs -f
+
+# 停止服务
+docker-compose down
+```
+
+#### 3.2 访问服务
+
+- 前端管理后台: http://localhost:80
+- 后端 API 服务: http://localhost:3003
+- MySQL 数据库: localhost:3306
+- Redis 缓存: localhost:6379
+
+#### 3.3 单独构建和运行
+
+```bash
+# 构建后端镜像
+cd api
+docker build -t kblog-api .
+
+# 构建前端镜像
+cd ../admin
+docker build -t kblog-admin .
+
+# 运行后端容器
+docker run -d -p 3003:3003 --name kblog-api \
+  -e DATABASE_URL="mysql://root:4869@120.48.131.124:3306/kblog" \
+  -e JWT_SECRET="your-jwt-secret" \
+  kblog-api
+
+# 运行前端容器
+docker run -d -p 80:80 --name kblog-admin kblog-admin
+```
+
+### 4. 环境配置
 
 #### API 环境变量配置
 

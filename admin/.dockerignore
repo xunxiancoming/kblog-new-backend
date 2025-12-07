@@ -1,0 +1,39 @@
+# 依赖目录
+node_modules
+
+# 构建输出
+build
+
+# 环境文件
+.env
+.env.local
+
+# 日志文件
+*.log
+
+# 测试文件
+__tests__
+__mocks__
+*.test.*
+*.spec.*
+
+# 覆盖率报告
+coverage
+
+# IDE文件
+.vscode
+.idea
+
+# 临时文件
+tmp
+temp
+
+# 源代码映射
+*.map
+
+# 开发文件
+public/
+src/
+!public/index.html
+!public/manifest.json
+!public/favicon.ico
