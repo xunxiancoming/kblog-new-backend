@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique 
+  email     String   @unique 
+  password  String   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Profile {
+  id            Int      @id @default(autoincrement())
+  title         String?  
+  avatar        String?  
+  bio           String?  
+  github        String?  
+  twitter       String?  
+  linkedin      String?  
+  email         String?  
+  phone         String?  
+  location      String?  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model Article {
+  id          Int      @id @default(autoincrement())
+  title       String   
+  content     String   @db.Text
+  summary     String?  
+  slug        String   @unique 
+  coverImage  String?  
+  viewCount   Int      @default(0)
+  status      String   @default("DRAFT")  // DRAFT, PUBLISHED
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 关联关系
+  comments Comment[]
+  tags     ArticleTag[]
+
+  @@map("articles")
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String   
+  description String   
+  imageUrl    String?  
+  projectUrl  String?  
+  githubUrl   String?  
+  techStack   String?   // JSON 格式存储技术栈
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.Text
+  author    String   
+  email     String   
+  website   String?  
+  ip        String?  
+  userAgent String?  
+  status    String   @default("PENDING")  // PENDING, APPROVED, REJECTED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 外键
+  articleId Int
+
+  // 关联关系
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique 
+  color     String?   // 十六进制颜色值
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关联关系
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+model ArticleTag {
+  id         Int      @id @default(autoincrement())
+  articleId  Int
+  tagId      Int
+  createdAt  DateTime @default(now())
+
+  // 关联关系
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, tagId])
+  @@map("article_tags")
+}
