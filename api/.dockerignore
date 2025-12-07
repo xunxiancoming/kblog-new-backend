@@ -1,0 +1,36 @@
+# 依赖目录
+node_modules
+
+# 构建输出
+dist
+*.tsbuildinfo
+
+# 环境文件
+.env
+.env.local
+
+# 日志文件
+*.log
+logs/
+
+# 测试文件
+__tests__
+__mocks__
+*.test.*
+*.spec.*
+
+# 覆盖率报告
+coverage
+
+# IDE文件
+.vscode
+.idea
+
+# 临时文件
+tmp
+temp
+
+# Prisma 生成文件（除了 schema.prisma）
+prisma/*.db
+prisma/*.db-journal
+!prisma/schema.prisma
