@@ -6,6 +6,6 @@ dist/
 build/
 
 # 环境变量
-/.env
+.env/
 .DS_Store
 .claude
