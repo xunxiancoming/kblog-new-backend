@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖
-RUN npm ci --only=production
+RUN npm install
 
 # 复制源代码
 COPY . .
@@ -26,7 +26,7 @@ COPY --from=builder /app/build /usr/share/nginx/html
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 暴露端口
-EXPOSE 80
+EXPOSE 3000
 
 # 启动 Nginx
 CMD ["nginx", "-g", "daemon off;"]
