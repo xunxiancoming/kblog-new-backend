@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3003";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 class ApiService {
   public api: AxiosInstance;
@@ -11,7 +11,7 @@ class ApiService {
       baseURL: API_BASE_URL,
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -19,7 +19,9 @@ class ApiService {
     this.api.interceptors.request.use(
       (config) => {
         // 优先使用从authStore获取的token，如果没有则回退到localStorage
-        const token = this.getToken ? this.getToken() : localStorage.getItem("token");
+        const token = this.getToken
+          ? this.getToken()
+          : localStorage.getItem("token");
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -36,7 +38,11 @@ class ApiService {
         return response;
       },
       (error) => {
-        console.error('API Error:', error.response?.status, error.response?.data);
+        console.error(
+          "API Error:",
+          error.response?.status,
+          error.response?.data
+        );
 
         if (error.response?.status === 401) {
           // 清除本地存储但不直接重定向，让 React Router 处理
